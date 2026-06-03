@@ -1,0 +1,40 @@
+name: Lite Thinking QA TestOps Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  run-automation-suite:
+    name: Ejecución de Pruebas y Reporte
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Descargar Código del Repositorio
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Entorno Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 3. Levantar Infraestructura de Kafka (Docker)
+        run: |
+          docker-compose up -d
+          echo "Esperando que Kafka-Broker esté completamente inicializado..."
+          sleep 15
+
+      - name: 4. Instalar Dependencias de Pruebas (Playwright)
+        run: |
+          cd tests
+          npm ci
+          npm run install:browsers :ci
+
+      - name: 5. Ejecutar Pruebas Playwright
+        run: |
+          cd tests
+          nmp run test
+
+      
