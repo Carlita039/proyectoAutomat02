@@ -22,7 +22,7 @@ jobs:
 
       - name: 3. Levantar Infraestructura de Kafka (Docker)
         run: |
-          docker-compose up -d
+          docker compose up -d --build
           echo "Esperando que Kafka-Broker esté completamente inicializado..."
           sleep 15
 
