@@ -28,16 +28,16 @@ jobs:
           sleep 15
 
       - name: 4. Instalar Dependencias de Pruebas (Playwright)
-        working-directory: ./proyectoAutomat02
+        working-directory: ${{ github.workspace }}
         run: |
           npm ci
           npx playwright install --with-deps
 
       - name: 5. Ejecutar Pruebas Playwright
-        working-directory: ./proyectoAutomat02
+        working-directory: ${{ github.workspace }}
         run: |
           npm run test
-          
+
       - name: 6. Guardar Reporte de Playwright (Opcional)
         if: always()
         uses: actions/upload-artifact@v4
