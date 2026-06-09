@@ -28,13 +28,11 @@ jobs:
 
       - name: 4. Instalar Dependencias de Pruebas (Playwright)
         run: |
-          cd tests
+          working-directory: ./tests
           npm ci
           npm run install:browsers :ci
 
       - name: 5. Ejecutar Pruebas Playwright
         run: |
-          cd tests
-          nmp run test
-
-      
+          working-directory: ./tests
+          npm run test
