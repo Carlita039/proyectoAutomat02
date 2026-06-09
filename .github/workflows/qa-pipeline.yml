@@ -28,14 +28,21 @@ jobs:
           sleep 15
 
       - name: 4. Instalar Dependencias de Pruebas (Playwright)
-        working-directory: ./proyectoAutomat02
         run: |
+          # 🔍 Busca dinámicamente la carpeta que contiene el package.json
+          TARGET_DIR=$(dirname $(find . -name "package.json" -not -path "*/node_modules/*" | head -n 1))
+          echo "Proyecto encontrado en la ruta: $TARGET_DIR"
+          
+          # Entra a la carpeta e instala todo de forma segura
+          cd "$TARGET_DIR"
           npm install --no-package-lock
           npx playwright install --with-deps
 
       - name: 5. Ejecutar Pruebas Playwright
-        working-directory: ./proyectoAutomat02
         run: |
+          # 🔍 Busca dinámicamente la carpeta para ejecutar los tests
+          TARGET_DIR=$(dirname $(find . -name "package.json" -not -path "*/node_modules/*" | head -n 1))
+          cd "$TARGET_DIR"
           npm run test
 
       - name: 6. Guardar Reporte de Playwright (Opcional)
@@ -43,5 +50,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: ./proyectoAutomat02/playwright-report/
+          path: "**/playwright-report/"
           retention-days: 7
