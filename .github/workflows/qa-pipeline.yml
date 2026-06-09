@@ -28,12 +28,10 @@ jobs:
           sleep 15
 
       - name: 4. Instalar Dependencias de Pruebas (Playwright)
-        working-directory: ./tests
         run: |
           npm ci
           npm run install:browsers :ci
 
       - name: 5. Ejecutar Pruebas Playwright
-        working-directory: ./tests
         run: |
           npm run test
