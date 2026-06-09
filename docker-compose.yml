@@ -1,7 +1,7 @@
 services:
   frontend:
     build:
-      context: .
+      context: ./src
       dockerfile: Dockerfile
     container_name: auto-frontend-app
     ports:
