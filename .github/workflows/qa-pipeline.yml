@@ -31,13 +31,16 @@ jobs:
         working-directory: ./test
         run: |
           npm install --no-package-lock
-          # 🚀 Instalamos navegadores con sus dependencias del sistema sin usar sudo
-          npx playwright install --with-deps
+          # 🛠️ Forzamos la instalación de navegadores usando el paquete directo de red para evitar bloqueos locales
+          npx --package=@playwright/test playwright install --with-deps
 
       - name: 5. Ejecutar Pruebas Playwright
         working-directory: ./test
+        env:
+          CI: true
         run: |
-          npx playwright test
+          # 🚀 Ejecución directa usando el orquestador global de paquetes de Node
+          npx --package=@playwright/test playwright test
 
       - name: 6. Guardar Reporte de Playwright (Opcional)
         if: always()
