@@ -37,16 +37,18 @@ jobs:
         working-directory: ./test
         run: |
           npm install --no-package-lock
-          # 🛠️ Forzamos la instalación de navegadores usando el paquete directo de red para evitar bloqueos locales
-          npx --package=@playwright/test playwright install --with-deps
+          # 🛠️ Solución Definitiva: Forzamos los permisos y usamos Node para ejecutar directamente el archivo JS sin pasar por bash/npx
+          chmod -R +x node_modules/ || true
+          node node_modules/playwright/cli.js install --with-deps
+
 
       - name: 5. Ejecutar Pruebas Playwright
         working-directory: ./test
         env:
           CI: true
         run: |
-          # 🚀 Ejecución directa usando el orquestador global de paquetes de Node
-          npx --package=@playwright/test playwright test
+          # 🚀 Ejecución directa de la suite con Node.js saltando el bloqueo de "Permission denied"
+          node node_modules/@playwright/test/cli.js test
 
       - name: 6. Guardar Reporte de Playwright (Opcional)
         if: always()
