@@ -39,7 +39,7 @@ jobs:
       - name: 5. Ejecutar Pruebas Playwright
         working-directory: ./test
         run: |
-          npm run test
+          npx playwright test
 
       - name: 6. Guardar Reporte de Playwright (Opcional)
         if: always()
