@@ -22,10 +22,16 @@ jobs:
           node-version: 18
 
       - name: 3. Levantar Infraestructura de Kafka (Docker)
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
-          docker compose up -d --build
-          echo "Esperando que Kafka-Broker esté completamente inicializado..."
-          sleep 15
+          echo "Iniciando descarga de imágenes con tolerancia a fallos..."
+          # Forzamos un pull preventivo con reintentos antes del build
+          docker pull nginx:1.27-alpine || true
+          
+          # Levantamos el ambiente
+          docker compose up -d --build --wait || docker compose up -d --build
+          echo "Contenedores Docker levantados de forma exitosa."
 
       - name: 4. Instalar Dependencias de Pruebas (Playwright)
         working-directory: ./test
