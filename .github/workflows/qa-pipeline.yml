@@ -31,10 +31,8 @@ jobs:
         working-directory: ./test
         run: |
           npm install --no-package-lock
-          # 🛠️ Otorgamos permisos de ejecución explícitos a los binarios locales de node
-          chmod +x ./node_modules/.bin/* || true
-          # Ejecutamos la instalación de navegadores con permisos del sistema
-          sudo npx playwright install --with-deps
+          # 🚀 Instalamos navegadores con sus dependencias del sistema sin usar sudo
+          npx playwright install --with-deps
 
       - name: 5. Ejecutar Pruebas Playwright
         working-directory: ./test
